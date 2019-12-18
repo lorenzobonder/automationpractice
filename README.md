@@ -15,7 +15,7 @@ A aplicação foi 100% feita em cima do browser Google Chrome, versão 79. Para 
 # Execução dos Testes
 O teste pedido em si deve ser executado via IntelliJ. Todos os testes possuem sua prórpia classe e três métodos principais: 
  - setUp() -> inicializa a instância do browser e abre a página principal.
- - <nomeDoTeste>() -> executa o caso de teste em si.
+ - nomeDoTeste() -> executa o caso de teste em si.
  - shutdown() -> fecha a instância do Google Chrome quando finalizada a execução.
 
 Novamente, importante frisar novamente que as evidências são salvas localmente, portanto deve-se trocar o diretório de saída para geração das evidências.
