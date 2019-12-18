@@ -42,14 +42,14 @@ public class ProductPage {
     }
 
     private WebElement quantity() {
-        WebElement qty = driver.findElement(By.id("quantity-wanted"));
+        WebElement qty = driver.findElement(By.id("quantity_wanted"));
         waitPage.until((ExpectedConditions.elementToBeClickable(qty)));
         return qty;
     }
 
     private Select productSize() {
-        Select sizeSelect = new Select (driver.findElement(By.id("group_1")));
-        waitPage.until(ExpectedConditions.elementToBeClickable(By.id("group_1")));
+        Select sizeSelect = new Select (driver.findElement(By.xpath("//*[@id=\"group_1\"]")));
+        //waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"group_1\"]")));
 
         return sizeSelect;
     }
@@ -98,7 +98,7 @@ public class ProductPage {
 
     public String getQuantity() {
         WebElement qtyEl = quantity();
-        return qtyEl.getText();
+        return qtyEl.getAttribute("value");
     }
 
     public String getSelectedSize() {

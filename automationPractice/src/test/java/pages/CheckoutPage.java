@@ -78,6 +78,53 @@ public class CheckoutPage {
         return box;
     }
 
+    private WebElement goToStep4Button() {
+        WebElement btn = driver.findElement(By.name("processAddress"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(btn)));
+        return btn;
+    }
+
+    private WebElement tosCheckbox() {
+        WebElement box = driver.findElement(By.id("cgv"));
+        return box;
+    }
+
+    private WebElement goToStep5Button() {
+        WebElement btn = driver.findElement(By.name("processCarrier"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(btn)));
+        return btn;
+    }
+
+    private WebElement priceTotal() {
+        WebElement field = driver.findElement(By.id("total_price"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(field)));
+        return field;
+    }
+
+    private WebElement shippingTotal() {
+        WebElement field = driver.findElement(By.id("total_shipping"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(field)));
+        return field;
+    }
+
+    private WebElement productTotal() {
+        WebElement field = driver.findElement(By.id("total_product"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(field)));
+        return field;
+    }
+
+    private WebElement bankWireOptionButton() {
+        WebElement btn = driver.findElement(By.xpath("//*[@id=\"HOOK_PAYMENT\"]/div[1]/div/p/a"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(btn)));
+        return btn;
+    }
+
+    private WebElement checkOptionButton() {
+        WebElement btn = driver.findElement(By.xpath("//*[@id=\"HOOK_PAYMENT\"]/div[2]/div/p/a"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(btn)));
+        return btn;
+    }
+
     public Boolean validateProductIsInSummary(String name, String price, String sku, String quantity, String size) {
         List<WebElement> sumList = getProductSummaryList();
         Boolean foundProdName = false;
@@ -90,28 +137,28 @@ public class CheckoutPage {
             WebElement itemProdNameEl = item.findElement(By.cssSelector("td.cart_description > p > a"));
             String itemProdName = itemProdNameEl.getText();
 
-            if(name.contains(itemProdName)) {
+            if(itemProdName.contains(name)) {
                 foundProdName = true;
                 // go to SKU
                 WebElement itemSkuEl = item.findElement(By.cssSelector("td.cart_description > small.cart_ref"));
                 String itemSkuName = itemSkuEl.getText();
-                if(sku.contains((itemSkuName))) {
+                if(itemSkuName.contains((sku))) {
                     foundSku = true;
                     //go to size
                     WebElement sizeEl = item.findElement(By.cssSelector("td.cart_description > small:nth-child(3) > a"));
                     String sizeText = sizeEl.getText();
-                    sizeText = sizeText.substring(sizeText.lastIndexOf(":"+1));
-                    if(size.contains(sizeText)) {
+                    sizeText = sizeText.substring(sizeText.lastIndexOf(":")+1);
+                    if(sizeText.contains(size)) {
                         foundSize = true;
                         //go to price
-                        WebElement priceEl = item.findElement(By.cssSelector("span[class='price]"));
+                        WebElement priceEl = item.findElement(By.cssSelector("td.cart_unit > span > span"));
                         String priceText = priceEl.getText();
-                        if(price.contains(priceText)) {
+                        if(priceText.contains(price)) {
                             foundPrice = true;
                             //go to quantity
                             WebElement qtyEl = item.findElement(By.cssSelector("td.cart_quantity.text-center > input.cart_quantity_input.form-control.grey"));
                             String qtyText = qtyEl.getAttribute("value");
-                            if(quantity.contains(qtyText)) {
+                            if(qtyText.contains(quantity)) {
                                 foundQuantity = true;
                                 break;
                             }
@@ -143,10 +190,11 @@ public class CheckoutPage {
 
         WebElement openCreateUserBtn = goToCreateAUserButton();
         openCreateUserBtn.click();
+        Thread.sleep(3000);
 
         waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#noSlide > h1")));
         String pageTitle = driver.findElement(By.cssSelector("#noSlide > h1")).getText();
-        if(pageTitle.contains("Create an account")) {
+        if(pageTitle.contains("CREATE AN ACCOUNT")) {
             return new CreateAUserPage(driver);
         }
         else {
@@ -164,7 +212,7 @@ public class CheckoutPage {
 
         WebElement deliveryItemBox = deliveryAddressItemBox();
         //Address User Name
-        WebElement itemAddressUserName = deliveryItemBox.findElement(By.className("address_firstname address_lastname"));
+        WebElement itemAddressUserName = deliveryItemBox.findElement(By.cssSelector("#address_delivery > li.address_firstname.address_lastname"));
         String itemUserName = itemAddressUserName.getText();
 
         if(itemUserName.contains(addressFstName) && itemUserName.contains(addressLstName)) {
@@ -172,7 +220,7 @@ public class CheckoutPage {
         }
 
         // go to Address Lines
-        WebElement itemAddressLinesEl = deliveryItemBox.findElement(By.className("address_address1 address_address2"));
+        WebElement itemAddressLinesEl = deliveryItemBox.findElement(By.cssSelector("#address_delivery > li.address_address1.address_address2"));
         String itemAddress = itemAddressLinesEl.getText();
         if(line2.trim().length() > 0 || line2 != null) {
             if(itemAddress.contains((line1)) && itemAddress.contains(line2)) {
@@ -186,17 +234,17 @@ public class CheckoutPage {
         }
 
         //go to Location Info (state, country, city, zip code)
-        WebElement cityStateZipCodeEl = deliveryItemBox.findElement(By.className("address_city address_state_name address_postcode"));
+        WebElement cityStateZipCodeEl = deliveryItemBox.findElement(By.cssSelector("#address_delivery > li.address_city.address_state_name.address_postcode"));
         String cityStateZipCodeTxt = cityStateZipCodeEl.getText();
 
-        WebElement countryEl = deliveryItemBox.findElement(By.className("address_country_name"));
+        WebElement countryEl = deliveryItemBox.findElement(By.cssSelector("#address_delivery > li.address_country_name"));
         String countryTxt = countryEl.getText();
         if(cityStateZipCodeTxt.contains(city) && cityStateZipCodeTxt.contains(state) && cityStateZipCodeTxt.contains(zip) && countryTxt.contains(country)) {
             foundAddressLocationInfo = true;
         }
 
         //go to Phone
-        WebElement phoneEl = deliveryItemBox.findElement(By.className("address_phone_mobile"));
+        WebElement phoneEl = deliveryItemBox.findElement(By.cssSelector("#address_delivery > li.address_phone_mobile"));
         String phoneText = phoneEl.getText();
         if(phoneText.contains(mobilePhone)) {
             foundPhone = true;
@@ -208,5 +256,92 @@ public class CheckoutPage {
         else {
             return false;
         }
+    }
+
+    public void confirmAddressAndGoToStep4() throws InterruptedException {
+        goToStep4Button().click();
+        Thread.sleep(3000);
+
+        waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#carrier_area > h1"),"SHIPPING"));
+    }
+
+    public void confirmAddressAndGoToStep5() throws InterruptedException {
+        tosCheckbox().click();
+        goToStep5Button().click();
+        Thread.sleep(3000);
+
+        waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > h1"),"PLEASE CHOOSE YOUR PAYMENT METHOD"));
+        waitPage.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"HOOK_PAYMENT\"]/div[1]/div/p/a")));
+        waitPage.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"HOOK_PAYMENT\"]/div[2]/div/p/a")));
+    }
+
+    public Boolean validateFinalPriceIsOK() {
+        List<WebElement> sumList = getProductSummaryList();
+        Double sumProducts = 0.0;
+        Double productValue = 0.0;
+        Double prodTotal = 0.0;
+        Double totalPrice = 0.0;
+        Double shipping = 0.0;
+
+        String prodTot = productTotal().getText().substring(1);
+        prodTotal = Double.parseDouble(prodTot);
+        String ship = shippingTotal().getText().substring(1);
+        shipping = Double.parseDouble(ship);
+        String total = priceTotal().getText().substring(1);
+        totalPrice = Double.parseDouble(total);
+
+        for(WebElement item: sumList) {
+            int prodQtd = Integer.parseInt(driver.findElement(By.cssSelector("td.cart_quantity.text-center > span")).getText());
+            String prodValue = driver.findElement(By.cssSelector("td.cart_unit > span")).getText();
+            productValue = Double.parseDouble(prodValue.substring(1));
+            sumProducts += (productValue * prodQtd);
+        }
+
+        Double sumTotalAndShipping = prodTotal + shipping;
+        if(Double.compare(sumProducts, prodTotal) == 0 && Double.compare(sumTotalAndShipping, totalPrice) == 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean selectBankWireAndConfirmOrder() {
+        try {
+            bankWireOptionButton().click();
+
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("module_bankwire_payment")));
+            waitPage.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"cart_navigation\"]/button")));
+
+            WebElement confirmButton = driver.findElement(By.xpath("//*[@id=\"cart_navigation\"]/button"));
+            confirmButton.click();
+
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("order-confirmation")));
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#center_column > p.alert.alert-success")));
+            waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > p.alert.alert-success"), "Your order on My Store is complete."));
+        } catch (Exception e) {
+            return false;
+        }
+
+            return false;
+    }
+
+    public Boolean selectCheckAndConfirmOrder() {
+        try {
+            checkOptionButton().click();
+
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("module-cheque-payment")));
+            waitPage.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"cart_navigation\"]/button")));
+
+            WebElement confirmButton = driver.findElement(By.xpath("//*[@id=\"cart_navigation\"]/button"));
+            confirmButton.click();
+
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("order-confirmation")));
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#center_column > p.alert.alert-success")));
+            waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > p.alert.alert-success"), "Your order on My Store is complete."));
+        } catch (Exception e) {
+            return false;
+        }
+
+        return false;
     }
 }

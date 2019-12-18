@@ -48,28 +48,25 @@ public class CreateAUserPage {
     }
 
     private WebElement customerPassword() {
-        WebElement pw = driver.findElement(By.id("customer_lastname"));
+        WebElement pw = driver.findElement(By.id("passwd"));
         waitPage.until((ExpectedConditions.elementToBeClickable(pw)));
         return pw;
     }
 
     private Select dateOfBirthDaySelector() {
         Select day = new Select (driver.findElement(By.id("days")));
-        waitPage.until(ExpectedConditions.elementToBeClickable(By.id("days")));
 
         return day;
     }
 
     private Select dateOfBirthMonthSelector() {
         Select month = new Select (driver.findElement(By.id("months")));
-        waitPage.until(ExpectedConditions.elementToBeClickable(By.id("months")));
 
         return month;
     }
 
     private Select dateOfBirthYearSelector() {
         Select year = new Select (driver.findElement(By.id("years")));
-        waitPage.until(ExpectedConditions.elementToBeClickable(By.id("years")));
 
         return year;
     }
@@ -124,7 +121,7 @@ public class CreateAUserPage {
 
     private Select addressStateSelector() {
         Select stateUs = new Select (driver.findElement(By.id("id_state")));
-        waitPage.until(ExpectedConditions.elementToBeClickable(By.id("id_state")));
+
 
         return stateUs;
     }
@@ -137,7 +134,6 @@ public class CreateAUserPage {
 
     private Select addressCountrySelector() {
         Select ctry = new Select (driver.findElement(By.id("id_country")));
-        waitPage.until(ExpectedConditions.elementToBeClickable(By.id("id_country")));
 
         return ctry;
     }
@@ -350,11 +346,12 @@ public class CreateAUserPage {
         Thread.sleep(1000);
     }
 
-    public CheckoutPage registerAndContinueCheckout() {
+    public CheckoutPage registerAndContinueCheckout() throws InterruptedException {
         registerButton().click();
+        Thread.sleep(3000);
 
         waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("order")));
-        waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > h1"),"Addresses"));
+        waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > h1"),"ADDRESSES"));
 
         return new CheckoutPage(driver);
     }
