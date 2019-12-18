@@ -21,3 +21,6 @@ O teste pedido em si deve ser executado via IntelliJ. Todos os testes possuem su
 Novamente, importante frisar novamente que as evidências são salvas localmente, portanto deve-se trocar o diretório de saída para geração das evidências.
 
 O IntelliJ intuitivamente oferece ao usuário a rodar cada test case individualmente, "acessando" o nome do método, ou todos test cases de uma vez só, se deixar o cursor em foco sobre o nome da classe em si.
+
+# Troubleshooting
+Qualquer dúvidas ou questões, só enviar um email (lorenzo.bonder@gmail.com) ou abrir um issue no git que responderei ASAP.
