@@ -308,17 +308,20 @@ public class CheckoutPage {
     public Boolean selectBankWireAndConfirmOrder() {
         try {
             bankWireOptionButton().click();
+            Thread.sleep(5000);
 
-            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("module_bankwire_payment")));
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("module-bankwire-payment")));
             waitPage.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"cart_navigation\"]/button")));
 
             WebElement confirmButton = driver.findElement(By.xpath("//*[@id=\"cart_navigation\"]/button"));
             confirmButton.click();
+            Thread.sleep(3000);
 
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("order-confirmation")));
-            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#center_column > p.alert.alert-success")));
-            waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > p.alert.alert-success"), "Your order on My Store is complete."));
+            waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#center_column > div > p > strong")));
+            waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > div > p > strong"), "Your order on My Store is complete."));
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -328,17 +331,20 @@ public class CheckoutPage {
     public Boolean selectCheckAndConfirmOrder() {
         try {
             checkOptionButton().click();
+            Thread.sleep(5000);
 
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("module-cheque-payment")));
             waitPage.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"cart_navigation\"]/button")));
 
             WebElement confirmButton = driver.findElement(By.xpath("//*[@id=\"cart_navigation\"]/button"));
             confirmButton.click();
+            Thread.sleep(3000);
 
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("order-confirmation")));
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#center_column > p.alert.alert-success")));
             waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > p.alert.alert-success"), "Your order on My Store is complete."));
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
 
