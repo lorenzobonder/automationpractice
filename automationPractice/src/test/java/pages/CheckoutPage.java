@@ -1,5 +1,6 @@
 package pages;
 
+import org.apache.commons.exec.util.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -63,6 +64,18 @@ public class CheckoutPage {
         WebElement btn = driver.findElement(By.id("SubmitLogin"));
         waitPage.until((ExpectedConditions.elementToBeClickable(btn)));
         return btn;
+    }
+
+    private WebElement deliveryAddressItemBox() {
+        WebElement box = driver.findElement(By.id("address_delivery"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(box)));
+        return box;
+    }
+
+    private WebElement invoiceAddressItemBox() {
+        WebElement box = driver.findElement(By.id("address_invoice"));
+        waitPage.until((ExpectedConditions.elementToBeClickable(box)));
+        return box;
     }
 
     public Boolean validateProductIsInSummary(String name, String price, String sku, String quantity, String size) {
@@ -138,6 +151,62 @@ public class CheckoutPage {
         }
         else {
             throw new Exception("Page not existent or wrong page opened");
+        }
+    }
+
+    public Boolean validateDeliveryAddressDetails(String addressFstName, String addressLstName, String line1, String line2, String city,
+                                                  String zip, String state, String country, String mobilePhone) {
+        List<WebElement> sumList = getProductSummaryList();
+        Boolean foundAddressUserName = false;
+        Boolean foundAddressLine = false;
+        Boolean foundAddressLocationInfo = false;
+        Boolean foundPhone = false;
+
+        WebElement deliveryItemBox = deliveryAddressItemBox();
+        //Address User Name
+        WebElement itemAddressUserName = deliveryItemBox.findElement(By.className("address_firstname address_lastname"));
+        String itemUserName = itemAddressUserName.getText();
+
+        if(itemUserName.contains(addressFstName) && itemUserName.contains(addressLstName)) {
+            foundAddressUserName = true;
+        }
+
+        // go to Address Lines
+        WebElement itemAddressLinesEl = deliveryItemBox.findElement(By.className("address_address1 address_address2"));
+        String itemAddress = itemAddressLinesEl.getText();
+        if(line2.trim().length() > 0 || line2 != null) {
+            if(itemAddress.contains((line1)) && itemAddress.contains(line2)) {
+                    foundAddressLine = true;
+                }
+        }
+        else {
+            if(itemAddress.contains((line1))) {
+                foundAddressLine = true;
+            }
+        }
+
+        //go to Location Info (state, country, city, zip code)
+        WebElement cityStateZipCodeEl = deliveryItemBox.findElement(By.className("address_city address_state_name address_postcode"));
+        String cityStateZipCodeTxt = cityStateZipCodeEl.getText();
+
+        WebElement countryEl = deliveryItemBox.findElement(By.className("address_country_name"));
+        String countryTxt = countryEl.getText();
+        if(cityStateZipCodeTxt.contains(city) && cityStateZipCodeTxt.contains(state) && cityStateZipCodeTxt.contains(zip) && countryTxt.contains(country)) {
+            foundAddressLocationInfo = true;
+        }
+
+        //go to Phone
+        WebElement phoneEl = deliveryItemBox.findElement(By.className("address_phone_mobile"));
+        String phoneText = phoneEl.getText();
+        if(phoneText.contains(mobilePhone)) {
+            foundPhone = true;
+        }
+
+        if(foundAddressUserName && foundAddressLine && foundAddressLocationInfo && foundPhone) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
