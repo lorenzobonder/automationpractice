@@ -320,12 +320,11 @@ public class CheckoutPage {
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("order-confirmation")));
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#center_column > div > p > strong")));
             waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > div > p > strong"), "Your order on My Store is complete."));
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-
-            return false;
     }
 
     public Boolean selectCheckAndConfirmOrder() {
@@ -343,11 +342,10 @@ public class CheckoutPage {
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("order-confirmation")));
             waitPage.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#center_column > p.alert.alert-success")));
             waitPage.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("#center_column > p.alert.alert-success"), "Your order on My Store is complete."));
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-
-        return false;
     }
 }

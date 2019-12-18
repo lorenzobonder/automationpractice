@@ -25,7 +25,7 @@ public class BuyClothingTest {
         try {
             WomenClothingPage wcp = hp.goToWomenClothingPage();
             ProductPage pp = wcp.openRandomClothingPage();
-            String screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
+            String screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output\\automationPractice\\automationPractice" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
             Screenshot.takeScreenshot(webDriver, screenshotArquivo);
 
             //Product Info
@@ -36,7 +36,7 @@ public class BuyClothingTest {
             String prodSize = pp.getSelectedSize();
             CheckoutPage cp = pp.addProductToCartAndCheckout();
             Assert.assertTrue(cp.validateProductIsInSummary(prodName, price, sku, qty, prodSize));
-            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
+            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output\\automationPractice\\automationPractice" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
             Screenshot.takeScreenshot(webDriver, screenshotArquivo);
 
             //If OK, proceed to create a user
@@ -63,30 +63,31 @@ public class BuyClothingTest {
             caup.setAddressState(state);
             caup.setAddressZipCode(zipCode);
             caup.setAddressMobilePhone(mobile);
-            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
+            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output\\automationPractice\\automationPractice" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
             Screenshot.takeScreenshot(webDriver, screenshotArquivo);
             cp = caup.registerAndContinueCheckout();
 
             //Validate Address checks out + Shipping (ToS included) and go to Payment Options
             Assert.assertTrue(cp.validateDeliveryAddressDetails(firstName, lastName, addrLine1, "", city, zipCode, state, country, mobile));
             cp.confirmAddressAndGoToStep4();
-            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
+            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output\\automationPractice\\automationPractice" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
             Screenshot.takeScreenshot(webDriver, screenshotArquivo);
             cp.confirmAddressAndGoToStep5();
-            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
+            screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output\\automationPractice\\automationPractice" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
             Screenshot.takeScreenshot(webDriver, screenshotArquivo);
 
             //Validate Price is correct + select payment option and confirm
             Assert.assertTrue(cp.validateFinalPriceIsOK());
-            int option = r.nextInt(2);
+            //int option = r.nextInt(2);
+            int option = 0;
             if(option == 1) {
                 Assert.assertTrue(cp.selectCheckAndConfirmOrder());
-                screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
+                screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output\\automationPractice\\automationPractice" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
                 Screenshot.takeScreenshot(webDriver, screenshotArquivo);
             }
             else {
                 Assert.assertTrue(cp.selectBankWireAndConfirmOrder());
-                screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
+                screenshotArquivo = "C:\\Users\\Lorenzo\\automation_output\\automationPractice\\automationPractice" + Generators.dateTimeToFile() + test.getMethodName() + ".png";
                 Screenshot.takeScreenshot(webDriver, screenshotArquivo);
             }
         } catch (Exception e) {
